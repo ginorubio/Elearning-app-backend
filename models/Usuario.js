@@ -1,5 +1,5 @@
 const mongoose =require('mongoose');
-//import bcrypt from 'bcryptjs'
+const bcrypt = require('bcrypt');
 const UsuarioSchema= mongoose.Schema({
    nombre:{
        type:String,
@@ -19,10 +19,10 @@ const UsuarioSchema= mongoose.Schema({
    }
    });
    
-   /*UsuarioSchema.statics.encryptPassword = async (password) => {
+  UsuarioSchema.statics.encryptPassword = async (password) => {
    const salt = await bcrypt.genSalt(10)
    return await bcrypt.hash(password, salt)
-}*/
+}
   /*
    UsuarioSchema.pre('save', async function next(){
    try{

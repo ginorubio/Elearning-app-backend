@@ -1,7 +1,7 @@
 const req = require("express/lib/request");
 const Usuario = require("../models/Usuario");
 
-/*exports.signUp = async (req, res) => {
+exports.signUp = async (req, res) => {
     const {nombre, email, celular, password} = req.body;
 
     const newUser = new Usuario({
@@ -11,9 +11,11 @@ const Usuario = require("../models/Usuario");
         password: await Usuario.encryptPassword(password)
     })
     console.log(newUser);
-    res.json('signup');
+    await newUser.save();
+    res.send(newUser);
 }
-*/
+
+/*
 exports.crearUsuario=async(req, res)=>{
 try {
     let usuario;
@@ -28,7 +30,7 @@ try {
     
 }
 
-}
+}*/
 exports.obtenerUsuarios= async(req,res)=>{
     try {
         const usuarios= await Usuario.find();
@@ -53,7 +55,7 @@ exports.modificarUsuario=async(req, res)=>{
         usuario.celular= celular;
         usuario.password= password;
         
-        usuario= await Usuario.findByIdAndUpdate({_id:req.params.id}, usuario, {new:true})
+        usuario= await Usuario.findByIdAndUpdate({_id:req.params.id}, usuario, {new:true})      
         res.json(usuario);
 
     } catch (error) {
