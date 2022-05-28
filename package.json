@@ -9,9 +9,17 @@
   "author": "Harrinzon Calero",
   "license": "ISC",
   "devDependencies": {
-    "nodemon": "^2.0.16"
+    "@types/passport": "^1.0.7",
+    "@types/passport-jwt": "^3.0.6",
+    "nodemon": "^2.0.16",
+    "tsc": "^2.0.4",
+    "typescript": "^4.7.2",
+    "watch": "^1.0.2"
   },
   "dependencies": {
+    "bcrypt": "^5.0.1",
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
     "mongoose": "^6.3.4"

@@ -1,6 +1,19 @@
 const req = require("express/lib/request");
 const Usuario = require("../models/Usuario");
 
+/*exports.signUp = async (req, res) => {
+    const {nombre, email, celular, password} = req.body;
+
+    const newUser = new Usuario({
+        nombre,
+        email,
+        celular,
+        password: await Usuario.encryptPassword(password)
+    })
+    console.log(newUser);
+    res.json('signup');
+}
+*/
 exports.crearUsuario=async(req, res)=>{
 try {
     let usuario;
@@ -29,15 +42,16 @@ exports.obtenerUsuarios= async(req,res)=>{
 }
 exports.modificarUsuario=async(req, res)=>{
     try {
-        const{idUser,nombre, email,celular}=req.body;
+        const{nombre, email,celular,password}=req.body;
         let usuario = await Usuario.findById(req.params.id);
         if(!usuario){
             res.status(404).json({msg: 'no existe el usuario'})
         }
-        usuario.idUser= idUser;
+        
         usuario.nombre= nombre;
         usuario.email= email;
         usuario.celular= celular;
+        usuario.password= password;
         
         usuario= await Usuario.findByIdAndUpdate({_id:req.params.id}, usuario, {new:true})
         res.json(usuario);

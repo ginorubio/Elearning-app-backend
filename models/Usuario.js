@@ -1,7 +1,6 @@
 const mongoose =require('mongoose');
+//import bcrypt from 'bcryptjs'
 const UsuarioSchema= mongoose.Schema({
-
-  
    nombre:{
        type:String,
        required: true
@@ -19,4 +18,20 @@ const UsuarioSchema= mongoose.Schema({
       required: true
    }
    });
+   
+   /*UsuarioSchema.statics.encryptPassword = async (password) => {
+   const salt = await bcrypt.genSalt(10)
+   return await bcrypt.hash(password, salt)
+}*/
+  /*
+   UsuarioSchema.pre('save', async function next(){
+   try{
+      const salt = await bcrypt.gensalt(10)
+      const hashedPassword = await bcrypt.hash(this.password, salt)
+      this.password=hashedPassword
+      next()
+   }catch(error){
+      next(error)
+   }
+   })*/
    module.exports=mongoose.model('usuario',UsuarioSchema);
