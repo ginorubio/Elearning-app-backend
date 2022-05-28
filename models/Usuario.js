@@ -1,10 +1,7 @@
 const mongoose =require('mongoose');
 const UsuarioSchema= mongoose.Schema({
 
-   idUser:{
-      type:Number,
-      required: true
-   },
+  
    nombre:{
        type:String,
        required: true
@@ -15,6 +12,10 @@ const UsuarioSchema= mongoose.Schema({
     },
     celular:{
       type:Number,
+      required: true
+   },
+   password:{
+      type:String,
       required: true
    }
    });
