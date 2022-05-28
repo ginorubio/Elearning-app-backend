@@ -9,6 +9,7 @@ conectarDB();
 app.use(express.json());
 app.use('/api/curso', require('./routes/curso'));
 app.use('/api/usuario', require('./routes/usuario'));
+app.use('/api/login', require('./routes/login'));
 
 
 app.listen(4000,()=>{
