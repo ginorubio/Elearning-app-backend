@@ -7,6 +7,7 @@ const cursoController= require('../controllers/cursoController');
 router.get('/free',cursoController.obtenerGratuitos);
 router.get('/top',cursoController.topValoracion);
 router.post('/', cursoController.crearCurso);
+router.post('/search', cursoController.buscarCurso);
 router.get('/',cursoController.obtenerCursos);
 router.put('/:id',cursoController.modificarCurso);
 router.get('/:id',cursoController.obtenerCurso);

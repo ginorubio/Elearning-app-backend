@@ -107,16 +107,19 @@ exports.obtenerGratuitos= async(req,res)=>{
     
     }
 }
-/*
-exports.busquedaCurso= async(req,res)=>{
+exports.buscarCurso=async(req, res)=>{
     try {
-        const cursos= await Curso.find({nombre:{$regex:'.*'+req.query.busquedaCurso+'.*'} });
-        res.json(cursos)
-        
+        const{nombre}=req.body;
+        let curso = await Curso.find({nombre});
+        if(!curso){
+            res.status(404).json({msg: 'no existe el curso'})
+        }
+        curso.nombre= nombre;
+        curso= await Curso.find({nombre})
+        res.json(curso);
+
     } catch (error) {
-    console.log(error);
+        console.log(error);
     res.status(500).send('Hubo un error');
-    
     }
 }
-*/
