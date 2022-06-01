@@ -11,6 +11,7 @@ exports.loginUsuario = async (req, res) => {
         })
         //console.log(newUser);
         await newUser.save();
+        
         res.send(newUser._id);
     }
     catch (error) 

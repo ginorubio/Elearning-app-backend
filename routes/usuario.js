@@ -5,6 +5,7 @@ const usuarioController= require('../controllers/usuarioController');
 
 //api/usuarios
 //router.post('/', usuarioController.crearUsuario);
+router.post('/login',usuarioController.login);
 router.post('/', usuarioController.signUp);
 router.get('/',usuarioController.obtenerUsuarios);
 router.put('/:id',usuarioController.modificarUsuario);
