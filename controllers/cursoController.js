@@ -115,7 +115,7 @@ exports.buscarCurso=async(req, res)=>{
             res.status(404).json({msg: 'no existe el curso'})
         }
         curso.nombre= nombre;
-        curso= await Curso.find({nombre})
+        //curso= await Curso.find({nombre})
         res.json(curso);
 
     } catch (error) {
