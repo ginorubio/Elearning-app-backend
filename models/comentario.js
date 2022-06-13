@@ -1,5 +1,5 @@
 const mongoose =require('mongoose');
-const CursoSchema= mongoose.Schema({
+const ComentarioSchema= mongoose.Schema({
  emailUser:{
     type:String,
     required: true
@@ -8,13 +8,13 @@ const CursoSchema= mongoose.Schema({
     type:String,
     required: true
  },
-descripcion:{
+ descripcion:{
    type:String,
    required: true
 },
- fechaCreacion:{
-    type:Date,
-    default: Date.now()
- }
+fechaCreacion:{
+   type:Date,
+   default: Date.now()
+}
 });
-module.exports=mongoose.model('curso',CursoSchema);
+module.exports=mongoose.model('comentario',ComentarioSchema);
