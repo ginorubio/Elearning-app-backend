@@ -1,5 +1,9 @@
 const mongoose =require('mongoose');
 const CursoSchema= mongoose.Schema({
+   /*id_:{
+      type:Number
+     },
+     */
  nombre:{
     type:String,
     required: true

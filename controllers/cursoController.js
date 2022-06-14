@@ -1,4 +1,6 @@
 const req = require("express/lib/request");
+const mongoose = require("mongoose");
+const { db } = require("../models/Curso");
 const Curso = require("../models/Curso");
 
 exports.crearCurso=async(req, res)=>{
@@ -119,6 +121,20 @@ exports.buscarCurso=async(req, res)=>{
         res.json(curso);
 
     } catch (error) {
+        console.log(error);
+    res.status(500).send('Hubo un error');
+    }
+}
+
+
+exports.agreggation = async(req, res)=>{
+//Cursos mejor valorados de informatica
+    try {  
+    const cursos= await Curso.aggregate([
+        { $match: { categoria : "Informatica",valoracion: { $gt: 4 }  }}],
+        )
+    res.json(cursos)
+    }catch (error) {
         console.log(error);
     res.status(500).send('Hubo un error');
     }

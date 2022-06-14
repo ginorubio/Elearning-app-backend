@@ -122,4 +122,32 @@ exports.eliminarUsuario=async(req, res)=>{
     res.status(500).send('Hubo un error');
     }
 }
-
+/*
+exports.infoCursos=async(req,res)=>{
+    try {
+Usuario.aggregate([
+    {
+      $lookup: {
+        from: "cursos",
+        localField: "_id",
+        foreignField: "usuario_id",
+        as: "cursos_order",
+      },
+    },
+   
+    {
+      $unwind: "$cursos_order",
+    },
+  ])
+    .then((result) => {
+      console.log(result);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+}catch (error) {
+    console.log(error);
+res.status(500).send('Hubo un error');
+}
+}
+*/

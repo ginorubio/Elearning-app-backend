@@ -1,6 +1,10 @@
 const mongoose =require('mongoose');
 const ComentarioSchema= mongoose.Schema({
- emailUser:{
+nombreUser:{
+      type:String,
+      required: true
+   },  
+emailUser:{
     type:String,
     required: true
  },

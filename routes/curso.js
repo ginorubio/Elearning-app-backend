@@ -4,6 +4,7 @@ const router= express.Router();
 const cursoController= require('../controllers/cursoController');
 
 //api/cursos
+router.get('/topCategoria',cursoController.agreggation);
 router.get('/free',cursoController.obtenerGratuitos);
 router.get('/top',cursoController.topValoracion);
 router.post('/', cursoController.crearCurso);

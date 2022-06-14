@@ -1,6 +1,13 @@
 const mongoose =require('mongoose');
 const bcrypt = require('bcrypt');
 const UsuarioSchema= mongoose.Schema({
+   /*id_:{
+      type:Number
+     },
+   usuario_id:{
+      type:Number
+     },
+   */
    nombre:{
        type:String,
        required: true
