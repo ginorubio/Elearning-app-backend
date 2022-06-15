@@ -125,7 +125,7 @@ exports.eliminarUsuario=async(req, res)=>{
 /*
 exports.infoCursos=async(req,res)=>{
     try {
-Usuario.aggregate([
+const usuarios= await Usuario.aggregate([
     {
       $lookup: {
         from: "cursos",

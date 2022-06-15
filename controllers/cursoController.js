@@ -126,16 +126,17 @@ exports.buscarCurso=async(req, res)=>{
     }
 }
 
-
 exports.agreggation = async(req, res)=>{
-//Cursos mejor valorados de informatica
-    try {  
-    const cursos= await Curso.aggregate([
-        { $match: { categoria : "Informatica",valoracion: { $gt: 4 }  }}],
-        )
-    res.json(cursos)
-    }catch (error) {
-        console.log(error);
-    res.status(500).send('Hubo un error');
+    //Cursos mejor valorados de la categoria informatica
+        try {  
+        const cursos= await Curso.aggregate([
+            { $match: { categoria : "Informatica",
+            valoracion: { $gt: 4 }  }}],
+            )
+        res.json(cursos)
+        }catch (error) {
+            console.log(error);
+        res.status(500).send('Hubo un error');
+        }
     }
-}
+

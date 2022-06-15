@@ -1,6 +1,7 @@
 const mongoose =require('mongoose');
 const ComentarioSchema= mongoose.Schema({
-nombreUser:{
+//schema de comentario completo
+   nombreUser:{
       type:String,
       required: true
    },  
