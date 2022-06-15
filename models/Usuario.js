@@ -14,7 +14,7 @@ const UsuarioSchema= mongoose.Schema({
     },
     email:{
        type:String,
-       required: true
+       required: true,
     },
     celular:{
       type:Number,

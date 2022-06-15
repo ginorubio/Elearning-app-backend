@@ -22,26 +22,40 @@ exports.login = async (req, res) => {
     }
 }
 
-
-
 exports.signUp = async (req, res)=>{
+    const{nombre, email, celular, password}= req.body
+    let newUser = await Usuario.findOne({email})||null;
+    if(newUser!==null){
+        //Usuario si existe
+        return res.status(400).json({
+            msj:'El usuario ya existe'
+        });
+    }
+    const usuario = new Usuario({
+        nombre,
+        email,
+        celular,
+        password: await Usuario.encryptPassword(password)
+    })   
+    console.log(usuario);
+    await usuario.save();
+    res.send(usuario);
 
+
+/*
     const{nombre, email, celular, password}= req.body
     const newUser = new Usuario({
         nombre,
         email,
         celular,
         password: await Usuario.encryptPassword(password)
-    })
-    usuario= await Usuario.find({email}, {password})    
+    })   
     console.log(newUser);
     await newUser.save();
     res.send(newUser);
+*/
+
 }
-
-
-
-    
 
 
 /*
@@ -59,7 +73,8 @@ try {
     
 }
 
-}*/
+}
+*/
 exports.obtenerUsuarios= async(req,res)=>{
     try {
         const usuarios= await Usuario.find();
