@@ -1,6 +1,50 @@
+//const bcrypt = require("bcryptjs/dist/bcrypt");
+const bcrypt = require('bcrypt');
 const req = require("express/lib/request");
 const Usuario = require("../models/Usuario");
 
+
+exports.login = async (req, res) => {
+
+    try {
+        const {email, password} = req.body;
+        let usuario = await Usuario.find({email});      
+        let hashedPassword = usuario[0].password
+        let isCorrectPasswprd = await bcrypt.compare(password, hashedPassword);
+        if(isCorrectPasswprd){
+            res.json(usuario[0]);
+        }else{
+            res.json({message: "password incorrect"});
+        }
+    } catch (error) {
+        console.log(error);
+        res.status(500).send('Hubo un error');
+    }
+}
+
+
+
+exports.signUp = async (req, res)=>{
+
+    const{nombre, email, celular, password}= req.body
+    const newUser = new Usuario({
+        nombre,
+        email,
+        celular,
+        password: await Usuario.encryptPassword(password)
+    })
+    usuario= await Usuario.find({email}, {password})    
+    console.log(newUser);
+    await newUser.save();
+    res.send(newUser);
+}
+
+
+
+    
+
+
+/*
 exports.crearUsuario=async(req, res)=>{
 try {
     let usuario;
@@ -15,7 +59,7 @@ try {
     
 }
 
-}
+}*/
 exports.obtenerUsuarios= async(req,res)=>{
     try {
         const usuarios= await Usuario.find();
@@ -29,17 +73,18 @@ exports.obtenerUsuarios= async(req,res)=>{
 }
 exports.modificarUsuario=async(req, res)=>{
     try {
-        const{idUser,nombre, email,celular}=req.body;
+        const{nombre, email,celular,password}=req.body;
         let usuario = await Usuario.findById(req.params.id);
         if(!usuario){
             res.status(404).json({msg: 'no existe el usuario'})
         }
-        usuario.idUser= idUser;
+        
         usuario.nombre= nombre;
         usuario.email= email;
         usuario.celular= celular;
+        usuario.password= password;
         
-        usuario= await Usuario.findByIdAndUpdate({_id:req.params.id}, usuario, {new:true})
+        usuario= await Usuario.findByIdAndUpdate({_id:req.params.id}, usuario, {new:true})      
         res.json(usuario);
 
     } catch (error) {
@@ -77,3 +122,4 @@ exports.eliminarUsuario=async(req, res)=>{
     res.status(500).send('Hubo un error');
     }
 }
+

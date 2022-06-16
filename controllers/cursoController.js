@@ -1,4 +1,5 @@
 const req = require("express/lib/request");
+const { default: mongoose } = require("mongoose");
 const Curso = require("../models/Curso");
 
 exports.crearCurso=async(req, res)=>{
@@ -56,7 +57,7 @@ exports.modificarCurso=async(req, res)=>{
 }
 exports.obtenerCurso=async(req, res)=>{
     try {
-      
+        
         let curso = await Curso.findById(req.params.id);
         if(!curso){
             res.status(404).json({msg: 'no existe el curso'})
@@ -78,6 +79,45 @@ exports.eliminarCurso=async(req, res)=>{
         }
         await Curso.findOneAndRemove({_id: req.params.id})
         res.json({msg:'Curso eliminado exitosamente'});
+
+    } catch (error) {
+        console.log(error);
+    res.status(500).send('Hubo un error');
+    }
+}
+
+exports.topValoracion= async(req,res)=>{
+    try {
+        const cursos= await Curso.find({"valoracion":"5"});
+        res.json(cursos)
+        
+    } catch (error) {
+    console.log(error);
+    res.status(500).send('Hubo un error');
+    
+    }
+}
+exports.obtenerGratuitos= async(req,res)=>{
+    try {
+        const cursos= await Curso.find({"precio":0});
+        res.json(cursos)
+        
+    } catch (error) {
+    console.log(error);
+    res.status(500).send('Hubo un error');
+    
+    }
+}
+exports.buscarCurso=async(req, res)=>{
+    try {
+        const{nombre}=req.body;
+        let curso = await Curso.find({nombre});
+        if(!curso){
+            res.status(404).json({msg: 'no existe el curso'})
+        }
+        curso.nombre= nombre;
+        curso= await Curso.find({nombre})
+        res.json(curso);
 
     } catch (error) {
         console.log(error);
