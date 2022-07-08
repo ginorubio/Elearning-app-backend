@@ -1,17 +1,18 @@
 const req = require("express/lib/request");
 const mongoose = require("mongoose");
 const { createAsExpression } = require("typescript");
-const Comentario = require("../models/Comentario");
+const Suscripcion = require("../models/Suscripcion");
 const Usuario = require("../models/Usuario");
 const Curso = require("../models/Curso");
-//Transacciones para insertar comentario
-exports.comentar = async(req, res)=>{
+
+//CONSTRUIR TRANSACTION
+exports.suscribir = async(req, res)=>{
     const session = await mongoose.startSession();
     //session.startTransaction() 
     try {
         console.log(req.body);
 
-        const{emailUser, nombreCurso, descripcion }= req.body;
+        const{emailUser, nombreCurso, fechaSuscripcion }= req.body;
        //session =  await mongoose.startSession();
 
         const transactionOptions = {
@@ -26,13 +27,13 @@ exports.comentar = async(req, res)=>{
 
             let cursoColletion = Curso.collection
             const usuarioUpdate = await userCollection.updateOne({email: emailUser },
-                {$addToSet: { comentarios: {curso: nombreCurso, descripcion: descripcion}}},{session} );
+                {$addToSet: { suscripciones: {curso: nombreCurso, fechaSuscripcion: new Date(fechaSuscripcion)}}},{session} );
 
             console.log(usuarioUpdate.matchedCount);
             console.log(usuarioUpdate.modifiedCount);
             
             const cursoUpdate = await cursoColletion.updateOne({nombre: nombreCurso},
-                {$addToSet: { comentarios: {usuario: emailUser, descripcion: descripcion}}}, {session}  
+                {$addToSet: { suscriptores: {usuario: emailUser, fechaSuscripcion: new Date(fechaSuscripcion)}}}, {session}  
                 );
             console.log(cursoUpdate.matchedCount);
             console.log(cursoUpdate.modifiedCount);
@@ -42,16 +43,15 @@ exports.comentar = async(req, res)=>{
         }, transactionOptions);
 
         if (transactionResult) {
-            console.log("Comentario realizado");
+            console.log("Suscripcion exitosa");
 
         }else{
-            console.log("No se ejecuto el comentario");
-    
+            console.log("No se ejecuto la suscripcion");
         }
 
         await session.commitTransaction();
         session.endSession();
-        res.json({message: "Comentario guardado"})
+        res.json({message: "Suscripcion guardada"})
         
     } catch (error) {
 
@@ -62,4 +62,5 @@ exports.comentar = async(req, res)=>{
         res.status(500).send('Hubo un error');
         
     }
+
 }

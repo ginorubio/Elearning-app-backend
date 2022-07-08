@@ -1,13 +1,7 @@
 const mongoose =require('mongoose');
 const bcrypt = require('bcrypt');
 const UsuarioSchema= mongoose.Schema({
-   /*id_:{
-      type:Number
-     },
-   usuario_id:{
-      type:Number
-     },
-   */
+
    nombre:{
        type:String,
        required: true
@@ -20,6 +14,10 @@ const UsuarioSchema= mongoose.Schema({
       type:Number,
       required: true
    },
+   role:{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Rol'
+  },
    password:{
       type:String,
       required: true
@@ -30,15 +28,4 @@ const UsuarioSchema= mongoose.Schema({
    const salt = await bcrypt.genSalt(10)
    return await bcrypt.hash(password, salt)
 }
-  /*
-   UsuarioSchema.pre('save', async function next(){
-   try{
-      const salt = await bcrypt.gensalt(10)
-      const hashedPassword = await bcrypt.hash(this.password, salt)
-      this.password=hashedPassword
-      next()
-   }catch(error){
-      next(error)
-   }
-   })*/
    module.exports=mongoose.model('usuario',UsuarioSchema);

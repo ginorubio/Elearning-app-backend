@@ -2,28 +2,37 @@
 const bcrypt = require('bcrypt');
 const req = require("express/lib/request");
 const Usuario = require("../models/Usuario");
+const Rol = require('../models/Rol');
+const jwt = require('jsonwebtoken');
 
 
 exports.login = async (req, res) => {
 
     try {
-        const {email, password} = req.body;
-        let usuario = await Usuario.find({email});      
-        let hashedPassword = usuario[0].password
-        let isCorrectPasswprd = await bcrypt.compare(password, hashedPassword);
-        if(isCorrectPasswprd){
-            res.json(usuario[0]);
-        }else{
-            res.json({message: "password incorrect"});
-        }
+        const {email,password} = req.body;
+        let userFound = await Usuario.findOne({email: email}); 
+        if (!userFound) return res.status(400).json({ message: "User Not Found" });    
+        const matchPassword = await bcrypt.compare(password, userFound.password);
+          if (!matchPassword)
+          return res.status(401).json({
+            token: null,
+            message: "Invalid Password",
+          });
+    
+        const token = jwt.sign({_id: userFound._id }, process.env.TOKEN_SECRET, {
+            expiresIn: '24h', // 24 hours
+          });     
+          res.json({ token });
     } catch (error) {
         console.log(error);
         res.status(500).send('Hubo un error');
     }
 }
 
+
 exports.signUp = async (req, res)=>{
-    const{nombre, email, celular, password}= req.body
+try {
+    const{nombre, email,celular, password}= req.body
     let newUser = await Usuario.findOne({email})||null;
     if(newUser!==null){
         //Usuario si existe
@@ -36,45 +45,21 @@ exports.signUp = async (req, res)=>{
         email,
         celular,
         password: await Usuario.encryptPassword(password)
-    })   
-    console.log(usuario);
-    await usuario.save();
-    res.send(usuario);
-
-
-/*
-    const{nombre, email, celular, password}= req.body
-    const newUser = new Usuario({
-        nombre,
-        email,
-        celular,
-        password: await Usuario.encryptPassword(password)
-    })   
-    console.log(newUser);
-    await newUser.save();
-    res.send(newUser);
-*/
-
+    })
+    const rol = await Rol.findOne({nombre: "invitado"});
+    usuario.role = rol._id;   
+    const savedUser = await usuario.save();
+    const token = jwt.sign({_id: savedUser._id }, process.env.TOKEN_SECRET, {
+        expiresIn: '24h',//24 hours
+      });
+      return res.status(200).json({ token });
+    }
+    catch (error) {
+        console.log(error);
+        return res.status(500).json(error);
+    }
 }
 
-
-/*
-exports.crearUsuario=async(req, res)=>{
-try {
-    let usuario;
-    usuario=new Usuario(req.body);
-    await usuario.save();
-    res.send(usuario);
-
-    
-} catch (error) {
-    console.log(error);
-    res.status(500).send('Hubo un error');
-    
-}
-
-}
-*/
 exports.obtenerUsuarios= async(req,res)=>{
     try {
         const usuarios= await Usuario.find();
