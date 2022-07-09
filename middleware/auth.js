@@ -46,10 +46,13 @@ exports.isUser = async (req, res, next) => {
     try {
         const usuario = await Usuario.findById(req.userId);
         const role = await Roles.findOne({_id: usuario.role});
+        console.log(usuario.nombre);
+        console.log(role.nombre);
         if(role.nombre === "estudiante"|| role.nombre === "admin"){
             next(); 
-            return;
-        }      
+        }else{
+            return res.status(400).json({error: 'no cuenta con los permisos suficientes'})
+        }       
     } catch (error) {
         return res.status(400).json({error: 'no válido'});
     }
