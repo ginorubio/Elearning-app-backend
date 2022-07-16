@@ -18,7 +18,10 @@ exports.login = async (req, res) => {
             token: null,
             message: "Invalid Password",
           });
-          const token = jwt.sign({_id: userFound._id }, process.env.TOKEN_SECRET, {
+          const rol = await Rol.findOne({nombre: "estudiante"});
+          userFound.role = rol._id;   
+          const savedUser = await userFound.save();
+          const token = jwt.sign({_id: savedUser._id }, process.env.TOKEN_SECRET, {
             expiresIn: '24h', // 24 hours
           });     
           res.json({ token });
@@ -51,7 +54,7 @@ try {
     const token = jwt.sign({_id: savedUser._id }, process.env.TOKEN_SECRET, {
         expiresIn: '24h',//24 hours
       });
-      return res.status(200).json({ token });
+      return res.status(200).json({ mensaje: 'Usuario registrado correctamente',token });
     }
     catch (error) {
         console.log(error);
